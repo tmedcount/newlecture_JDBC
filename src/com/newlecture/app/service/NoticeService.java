@@ -20,7 +20,7 @@ public class NoticeService {
 	
 	public List<Notice> getList() throws ClassNotFoundException, SQLException {
 		
-		String sql = "SELECT * FROM NOTICE WHERE HIT>=10 ORDER BY ID DESC";
+		String sql = "SELECT * FROM NOTICE";
 		
 		Class.forName(driver);
 		Connection con = DriverManager.getConnection(url, uid, pwd);
