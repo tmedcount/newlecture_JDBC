@@ -2,6 +2,7 @@ package com.newlecture.app.service;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,13 +13,17 @@ import java.util.List;
 import com.newlecture.app.entity.Notice;
 
 public class NoticeService {
+	private String url = "jdbc:oracle:thin:@localhost:1521/xepdb1";
+	private String uid = "newlec";
+	private String pwd = "rufdml13";
+	private String driver = "oracle.jdbc.driver.OracleDriver";
+	
 	public List<Notice> getList() throws ClassNotFoundException, SQLException {
 		
-		String url = "jdbc:oracle:thin:@localhost:1521/xepdb1";
 		String sql = "SELECT * FROM NOTICE WHERE HIT>=10 ORDER BY ID DESC";
 		
-		Class.forName("oracle.jdbc.driver.OracleDriver");
-		Connection con = DriverManager.getConnection(url, "newlec", "rufdml13");
+		Class.forName(driver);
+		Connection con = DriverManager.getConnection(url, uid, pwd);
 		Statement st = con.createStatement();
 		ResultSet rs = st.executeQuery(sql);
 		
@@ -31,6 +36,8 @@ public class NoticeService {
 			Date regDate = rs.getDate("REGDATE");
 			String content  = rs.getString("CONTENT");
 			int hit = rs.getInt("hit");
+			String files = rs.getString("files");
+			int pub = rs.getInt("pub");
 			
 			Notice notice = new Notice(
 								id,
@@ -38,7 +45,9 @@ public class NoticeService {
 								writerId,
 								regDate,
 								content,
-								hit
+								hit,
+								files,
+								pub
 							);
 		
 			list.add(notice);
@@ -50,4 +59,84 @@ public class NoticeService {
 		
 		return list;
 	}
+	
+	public int insert(Notice notice) throws SQLException, ClassNotFoundException {
+		
+		String title = notice.getTitle();
+		String writerId = notice.getWriterId();
+		String content = notice.getContent();
+		String files = notice.getFiles();
+		
+		String sql = "INSERT INTO notice ("
+				+ "    title,"
+				+ "    writer_id,"
+				+ "    content,"
+				+ "    files"
+				+ ") VALUES (?,?,?,?)";
+		
+		Class.forName(driver);
+		Connection con = DriverManager.getConnection(url, uid, pwd);
+		// Statement st = con.createStatement();
+		// st.ex...(sql)
+		PreparedStatement st = con.prepareStatement(sql);
+		st.setString(1, title);
+		st.setString(2, writerId);
+		st.setString(3, content);
+		st.setString(4, files);
+		
+		int result = st.executeUpdate();
+		
+		st.close();
+		con.close();	
+		
+		return result;
+	}
+	
+	public int update(Notice notice) throws SQLException, ClassNotFoundException {
+		
+		String title = notice.getTitle();
+		String content = notice.getContent();
+		String files = notice.getFiles();
+		int id = notice.getId();
+		
+		String sql = "UPDATE NOTICE SET TITLE = ?, CONTENT = ?, FILES = ? WHERE ID=?";
+		
+		Class.forName(driver);
+		Connection con = DriverManager.getConnection(url, uid, pwd);
+		// Statement st = con.createStatement();
+		// st.ex...(sql)
+		PreparedStatement st = con.prepareStatement(sql);
+		st.setString(1, title);
+		st.setString(2, content);
+		st.setString(3, files);
+		st.setInt(4, id);
+				
+		int result = st.executeUpdate();
+		
+		st.close();
+		con.close();		
+		
+		return result;
+	}
+	
+	public int delete(int id) throws SQLException, ClassNotFoundException {
+		
+		String sql = "DELETE NOTICE WHERE ID = ?";
+		
+		Class.forName(driver);
+		Connection con = DriverManager.getConnection(url, uid, pwd);
+		// Statement st = con.createStatement();
+		// st.ex...(sql)
+		PreparedStatement st = con.prepareStatement(sql);
+		st.setInt(1, id);
+		
+		int result = st.executeUpdate();
+		
+		st.close();
+		con.close();		
+		
+		return result;
+	}
 }
+
+
