@@ -21,7 +21,7 @@ public class Program5 {
 				console.movePrevList();
 				break;
 			case 3: // 다음
-				console.moveNextvList();
+				console.moveNextList();
 				break;
 			case 4: // 글쓰기
 				break;
