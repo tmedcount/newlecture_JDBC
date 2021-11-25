@@ -18,8 +18,10 @@ public class Program5 {
 			case 1: // 상세조회
 				break;
 			case 2: // 이전
+				console.movePrevList();
 				break;
 			case 3: // 다음
+				console.moveNextvList();
 				break;
 			case 4: // 글쓰기
 				break;
