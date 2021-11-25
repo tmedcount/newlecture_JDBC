@@ -23,12 +23,7 @@ public class NoticeService {
 		int start =  1 + (page-1)*10;// 1, 11, 21... 
 		int end = 10 * page; // 10, 20, 30...		
 		
-		String sql = "SELECT * FROM ("
-				+ "    SELECT ROWNUM NUM, N.* FROM ("
-				+ "        SELECT * FROM NOTICE ORDER BY REGDATE DESC"
-				+ "            ) N"
-				+ ")"
-				+ " WHERE NUM BETWEEN ? AND ?";
+		String sql = "SELECT * FROM NOTICE_VIEW WHERE NUM BETWEEN ? AND ?";
 		
 		Class.forName(driver);
 		Connection con = DriverManager.getConnection(url, uid, pwd);

@@ -12,7 +12,7 @@ public class Program4 {
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		
-		int id = 13;
+		int id = 20;
 		
 		String url = "jdbc:oracle:thin:@localhost:1521/xepdb1";
 		String sql = "DELETE NOTICE WHERE ID = ?";

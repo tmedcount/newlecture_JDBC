@@ -14,7 +14,7 @@ public class Program3 {
 		
 		String title = "TEST2";
 		String content = "HAHAHA2";
-		int id = 13;
+		int id = 20;
 		
 		String url = "jdbc:oracle:thin:@localhost:1521/xepdb1";
 		String sql = "UPDATE NOTICE SET TITLE = ?, CONTENT = ? WHERE ID=?";
